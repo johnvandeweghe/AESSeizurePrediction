@@ -6,7 +6,7 @@ Having written the library I decided to go forward with the implmentation to see
 
 Requirements
 ====================
-+PHP 5.5+
-+pecl's SVM library, along with libsvm installed
-+.mat files provided by the competition
-+Probably some other stuff
+* PHP 5.5+
+* pecl's SVM library, along with libsvm installed
+* .mat files provided by the competition
+* Probably some other stuff
