@@ -36,7 +36,7 @@ class Matlab {
 		if(file_exists($filename)){
 			$this->filename = $filename;
 		} else {
-			throw new Exception('File not found');
+			throw new Exception('File not found: ' . $filename);
 		}
 
 		if(!($this->fhandle = fopen($this->filename, 'r'))){
