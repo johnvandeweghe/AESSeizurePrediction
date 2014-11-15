@@ -22,7 +22,7 @@ echo date('c') . " Starting up...\n";
 
 
 if(!$use_saved){
-	for($i = 1; $i < 7; $i++){
+	for($i = 1; $i < 51; $i++){
 		$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 		$ml = new Matlab($path . $prefix . 'interictal_segment_0'. $padded .'.mat');
 
@@ -33,7 +33,7 @@ if(!$use_saved){
 
 	echo date('c') . " Done learning inter\n";
 
-	for($i = 1; $i < 7; $i++){
+	for($i = 1; $i < 23; $i++){
 		$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 		$ml = new Matlab($path . $prefix . 'preictal_segment_0'. $padded .'.mat');
 
@@ -60,7 +60,7 @@ $inter_right = 0;
 $inter_total = 0;
 
 //for($i = 338; $i < 451; $i++){
-for($i = 445; $i < 451; $i++){
+for($i = 400; $i < 451; $i++){
 	$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 	$ml = new Matlab($path . $prefix . 'interictal_segment_0'. $padded .'.mat');
 
@@ -75,8 +75,7 @@ for($i = 445; $i < 451; $i++){
 $pre_right = 0;
 $pre_total = 0;
 
-//for($i = 23; $i < 31; $i++){
-for($i = 25; $i < 31; $i++){
+for($i = 23; $i < 31; $i++){
 	$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 	$ml = new Matlab($path . $prefix . 'preictal_segment_0'. $padded .'.mat');
 

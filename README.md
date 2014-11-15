@@ -10,3 +10,9 @@ Requirements
 * pecl's SVM library, along with libsvm installed
 * .mat files provided by the competition
 * Probably some other stuff
+
+TODO
+====================
+* Add ability to add to .sav instead of writing it from scratch
+* Improve scores
+* Test more than Dog_5
