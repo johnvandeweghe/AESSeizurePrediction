@@ -22,7 +22,7 @@ echo date('c') . " Starting up...\n";
 
 
 if(!$use_saved){
-	for($i = 1; $i < 51; $i++){
+	for($i = 1; $i < 23; $i++){
 		$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 		$ml = new Matlab($path . $prefix . 'interictal_segment_0'. $padded .'.mat');
 
@@ -60,7 +60,7 @@ $inter_right = 0;
 $inter_total = 0;
 
 //for($i = 338; $i < 451; $i++){
-for($i = 400; $i < 451; $i++){
+for($i = 443; $i < 451; $i++){
 	$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 	$ml = new Matlab($path . $prefix . 'interictal_segment_0'. $padded .'.mat');
 

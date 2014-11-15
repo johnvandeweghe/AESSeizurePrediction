@@ -64,6 +64,11 @@ class AESSeizurePrediction {
 		$max = false;
 		foreach($data as $channel_data){
 			//Lets clean this data up a bit before we do anything with it
+			foreach($channel_data as &$datum){
+				$datum = abs($datum);
+			}
+			unset($datum);		
+			
 			$first_count = count($channel_data);
 			$avg = array_sum($channel_data)/$first_count;
 			$std_sum = 0;
