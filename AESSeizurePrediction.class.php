@@ -17,9 +17,10 @@ class AESSeizurePrediction {
 		fwrite($this->exampleFile, $row);
 	}
 
-	public function process(){
+	public function process($use_save = false){
 		$svm = new SVM();
-		$this->model = $svm->train(fopen($this->exampleFilePath, 'r'));
+		$this->model = $use_save && file_exists('model.sav') ? new SVMModel('model.sav') : $svm->train(fopen($this->exampleFilePath, 'r'));
+		$this->model->save('model.sav');
 	}
 
 	public function predict($data){

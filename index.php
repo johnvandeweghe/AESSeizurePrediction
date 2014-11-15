@@ -5,11 +5,12 @@ include('MatlabArray.class.php');
 include('AESSeizurePrediction.class.php');
 
 if(!isset($argv[1]) || !isset($argv[2])){
-	echo "Usage: php index.php mat_path file_prefix\n";
+	echo "Usage: php index.php mat_path file_prefix use_saved_model\n";
 	exit(1);
 }
 $path = $argv[1];
 $prefix = $argv[2];
+$use_saved = $argv[3] == 1;
 
 if(file_exists('analysis.ex')){
 	unlink('analysis.ex');
@@ -38,7 +39,7 @@ for($i = 1; $i < 23; $i++){
 
 echo date('c') . " Done learning pre\n";
 
-$p->process();
+$p->process($use_saved);
 
 echo date('c') . " Done creating model\n";
 
