@@ -12,42 +12,55 @@ $path = $argv[1];
 $prefix = $argv[2];
 $use_saved = $argv[3] == 1;
 
-if(file_exists('analysis.ex')){
-	unlink('analysis.ex');
+if($use_saved && !file_exists('model.sav')){
+	echo "Save file not found!\n";
+	exit(1);
 }
-$p = new AESSeizurePrediction('analysis.ex');
+
+$p = new AESSeizurePrediction();
 echo date('c') . " Starting up...\n";
 
-for($i = 1; $i < 23; $i++){
-	$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
-	$ml = new Matlab($path . $prefix . 'interictal_segment_0'. $padded .'.mat');
 
-	learn($ml, false);
+if(!$use_saved){
+	for($i = 1; $i < 7; $i++){
+		$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
+		$ml = new Matlab($path . $prefix . 'interictal_segment_0'. $padded .'.mat');
 
-	echo date('c') . ' Finished ' . $prefix . 'interictal_segment_0'. $padded .".mat\n";
+		learn($ml, false);
+
+		echo date('c') . ' Finished ' . $prefix . 'interictal_segment_0'. $padded .".mat\n";
+	}
+
+	echo date('c') . " Done learning inter\n";
+
+	for($i = 1; $i < 7; $i++){
+		$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
+		$ml = new Matlab($path . $prefix . 'preictal_segment_0'. $padded .'.mat');
+
+		learn($ml, true);
+		echo date('c') . ' Finished ' . $prefix . 'preictal_segment_0'. $padded .".mat\n";
+	}
+
+	echo date('c') . " Done learning pre\n";
+	if(file_exists('model.sav')){
+		unlink('model.sav');
+	}
+	if(file_exists('analysis.ex')){
+		unlink('analysis.ex');
+	}
 }
-
-echo date('c') . " Done learning inter\n";
-
-for($i = 1; $i < 23; $i++){
-	$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
-	$ml = new Matlab($path . $prefix . 'preictal_segment_0'. $padded .'.mat');
-
-	learn($ml, true);
-	echo date('c') . ' Finished ' . $prefix . 'preictal_segment_0'. $padded .".mat\n";
-}
-
-echo date('c') . " Done learning pre\n";
 
 $p->process($use_saved);
 
-echo date('c') . " Done creating model\n";
+if(!$use_saved){
+	echo date('c') . " Done creating model\n";
+}
 
 $inter_right = 0;
 $inter_total = 0;
 
 //for($i = 338; $i < 451; $i++){
-for($i = 423; $i < 451; $i++){
+for($i = 445; $i < 451; $i++){
 	$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 	$ml = new Matlab($path . $prefix . 'interictal_segment_0'. $padded .'.mat');
 
@@ -62,7 +75,8 @@ for($i = 423; $i < 451; $i++){
 $pre_right = 0;
 $pre_total = 0;
 
-for($i = 23; $i < 31; $i++){
+//for($i = 23; $i < 31; $i++){
+for($i = 25; $i < 31; $i++){
 	$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 	$ml = new Matlab($path . $prefix . 'preictal_segment_0'. $padded .'.mat');
 
@@ -71,7 +85,7 @@ for($i = 23; $i < 31; $i++){
 	if($result){
 		$pre_right++;
 	}
-	echo date('c') . ' Finished' . $prefix . 'preictal_segment_0'. $padded .".mat\n";
+	echo date('c') . ' Finished ' . $prefix . 'preictal_segment_0'. $padded .".mat\n";
 }
 
 echo date('c') . " RESULT:\n".
