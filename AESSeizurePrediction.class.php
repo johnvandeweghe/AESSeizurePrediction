@@ -49,7 +49,7 @@ class AESSeizurePrediction {
 			echo "Scaled data on min: " . $this->min . ", max: " . $this->max . "\n";
 			$inter_weight = 1 - ($this->total_inter / ($this->total_inter+$this->total_pre));
 			$pre_weight = 1 - ($this->total_pre / ($this->total_inter+$this->total_pre));
-			echo "Learning data with inter weight of $inter_weight and pre weight of $pre\n";
+			echo "Learning data with inter weight of $inter_weight and pre weight of $pre_weight\n";
 		} else {
 			//Lets load in the scale so we can do proper predictions
 			$minmax = explode(',', file_get_contents($this->analysis_file));
@@ -68,7 +68,7 @@ class AESSeizurePrediction {
 		$analysis = self::analyze($data);
 		
 		foreach($analysis['averages'] as $average){
-			$row = array(1 => ($average - $this->min) / ($this->max - $this->min));
+			$row = [1 => ($average - $this->min) / ($this->max - $this->min)];
 			$channel_result =  $this->model->predict($row);
 			$result += $channel_result;
 			
@@ -84,7 +84,7 @@ class AESSeizurePrediction {
 		$min = false;
 		$max = false;
 		foreach($data as $channel_data){
-			//Lets clean this data up a bit before we do anything with it
+			// Lets clean this data up a bit before we do anything with it
 			foreach($channel_data as &$datum){
 				$datum = abs($datum);
 			}
@@ -102,7 +102,7 @@ class AESSeizurePrediction {
 			$sigma = pow($std_dev, .5);
 
 			foreach($channel_data as $k=>$datum){
-				if(abs($datum-$avg) > $sigma)
+				if(abs($datum-$avg) > $sigma*3)
 					unset($channel_data[$k]);
 			}
 			$channel_data = array_values($channel_data);

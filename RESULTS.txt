@@ -1,0 +1,48 @@
+Experiment: Effect of standard deviation data exclusion
+ Without std deviation:
+  2014-11-16T02:23:26-06:00 RESULT:
+  Inter avg: 1, Pre avg: 0
+  Inter correct: 31, Inter total: 31, Pre correct: 0, Pre total: 10
+  Overall Score: 0.756
+ NOTE: Above has higher score, but is worse result (see pre avg)
+ With std deviation (> 1 sigma excluded):
+  2014-11-16T02:28:44-06:00 RESULT:
+  Inter avg: 0.323, Pre avg: 1
+  Inter correct: 10, Inter total: 31, Pre correct: 10, Pre total: 10
+  Overall Score: 0.488
+ With std deviation (>2 sigma excluded):
+  2014-11-16T02:58:36-06:00 RESULT:
+  Inter avg: 0.387, Pre avg: 1
+  Inter correct: 12, Inter total: 31, Pre correct: 10, Pre total: 10
+  Overall Score: 0.537
+Conclusion: >2 Sigma exclusion is used forwards.
+
+Experiment: Effect of removing data scaling from 0-1
+ Without data scaling:
+  2014-11-16T03:38:26-06:00 RESULT:
+  Inter avg: 0.806, Pre avg: 0.6
+  Inter correct: 25, Inter total: 31, Pre correct: 6, Pre total: 10
+  Overall Score: 0.756
+ Note: Note sure about this, seems inter goes way up, but pre dropped. Overall average went up.
+ Note 2: It's possible this is higher due to percision being increased. Maybe this could be leveraged.
+Conclusion: Continue using data scaling for now.
+
+Experiment: Adding min and max values as a feature
+ With min and max as features (per file):
+  2014-11-16T03:48:59-06:00 RESULT:
+  Inter avg: 0.516, Pre avg: 0.6
+  Inter correct: 16, Inter total: 31, Pre correct: 6, Pre total: 10
+  Overall Score: 0.537
+Conclusion: Not including min/max as features.
+
+Experiment: Effect of removing absolute data cleaning
+ Without abs:
+  2014-11-16T04:20:59-06:00 Finished Dog_5_preictal_segment_0030.mat
+  2014-11-16T04:20:59-06:00 RESULT:
+  Inter avg: 1, Pre avg: 0
+  Inter correct: 31, Inter total: 31, Pre correct: 0, Pre total: 10
+  Overall Score: 0.756
+Conclusion: Abs will continue
+
+Experiment: More sigma values
+ With std deviation (>3 sigma exlcuded):

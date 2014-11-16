@@ -1,2 +1,2 @@
-analysis.ex
-model.sav
+*.ex
+*.sav
