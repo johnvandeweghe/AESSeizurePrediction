@@ -5,24 +5,26 @@ include('MatlabArray.class.php');
 include('AESSeizurePrediction.class.php');
 
 if(!isset($argv[1]) || !isset($argv[2])){
-	echo "Usage: php index.php mat_path file_prefix use_saved_model\n";
+	echo "Usage: php index.php mat_path file_prefix [load_only=0] [analysis_file=analysis.ex] [model_file=model.sav]\n";
 	exit(1);
 }
 $path = $argv[1];
 $prefix = $argv[2];
-$use_saved = $argv[3] == 1;
+$use_saved = !isset($argv[3]) ?: $argv[3] == 1;
+$analysis_file = !isset($argv[4]) ? 'analysis.ex' : $argv[4];
+$model_file = !isset($argv[5]) ? 'model.sav' : $argv[5];
 
-if($use_saved && !file_exists('model.sav')){
-	echo "Save file not found!\n";
+if($use_saved && (!file_exists($model_file) || !file_exists($analysis_file))){
+	echo "Save/analysis file not found!\n";
 	exit(1);
 }
 
-$p = new AESSeizurePrediction();
+$p = new AESSeizurePrediction($analysis_file, $model_file);
 echo date('c') . " Starting up...\n";
 
 
 if(!$use_saved){
-	for($i = 1; $i < 23; $i++){
+	for($i = 1; $i < 6; $i++){
 		$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 		$ml = new Matlab($path . $prefix . 'interictal_segment_0'. $padded .'.mat');
 
@@ -33,7 +35,7 @@ if(!$use_saved){
 
 	echo date('c') . " Done learning inter\n";
 
-	for($i = 1; $i < 23; $i++){
+	for($i = 1; $i < 6; $i++){
 		$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 		$ml = new Matlab($path . $prefix . 'preictal_segment_0'. $padded .'.mat');
 
@@ -42,11 +44,11 @@ if(!$use_saved){
 	}
 
 	echo date('c') . " Done learning pre\n";
-	if(file_exists('model.sav')){
-		unlink('model.sav');
+	if(file_exists($model_file)){
+		unlink($model_file);
 	}
-	if(file_exists('analysis.ex')){
-		unlink('analysis.ex');
+	if(file_exists($analysis_file)){
+		unlink($analysis_file);
 	}
 }
 
@@ -60,7 +62,7 @@ $inter_right = 0;
 $inter_total = 0;
 
 //for($i = 338; $i < 451; $i++){
-for($i = 443; $i < 451; $i++){
+for($i = 6; $i < 11; $i++){
 	$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 	$ml = new Matlab($path . $prefix . 'interictal_segment_0'. $padded .'.mat');
 
@@ -75,7 +77,7 @@ for($i = 443; $i < 451; $i++){
 $pre_right = 0;
 $pre_total = 0;
 
-for($i = 23; $i < 31; $i++){
+for($i = 6; $i < 11; $i++){
 	$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 	$ml = new Matlab($path . $prefix . 'preictal_segment_0'. $padded .'.mat');
 

@@ -2,14 +2,21 @@
 class AESSeizurePrediction {
 	private $model = null;
 	
+	private $analysis_file = '';
+	private $model_file = '';
+	
 	private $data = [
 	];
 	
 	private $min = false;
-	
 	private $max = false;
+	
+	private $total_pre = 0;
+	private $total_inter = 0;
 
-	public function __construct(){
+	public function __construct($analysis_file, $model_file){
+		$this->analysis_file = $analysis_file;
+		$this->model_file = $model_file;
 	}
 
 	public function add($data, $is_seizure){
@@ -24,6 +31,11 @@ class AESSeizurePrediction {
 		}
 
 		foreach($analysis['averages'] as $average){
+			if($is_seizure){
+				$this->total_pre++;
+			} else {
+				$this->total_inter++;
+			}
 			$this->data[] = [($is_seizure ? 1 : -1), 1 => $average];
 		}
 	}
@@ -33,16 +45,21 @@ class AESSeizurePrediction {
 			foreach($this->data as &$datum){
 				$datum[1] = ($datum[1] - $this->min) / ($this->max - $this->min);
 			}
-			file_put_contents('analysis.ex', $this->min . ',' . $this->max);
+			file_put_contents($this->analysis_file, $this->min . ',' . $this->max);
+			echo "Scaled data on min: " . $this->min . ", max: " . $this->max . "\n";
+			$inter_weight = 1 - ($this->total_inter / ($this->total_inter+$this->total_pre));
+			$pre_weight = 1 - ($this->total_pre / ($this->total_inter+$this->total_pre));
+			echo "Learning data with inter weight of $inter_weight and pre weight of $pre\n";
 		} else {
 			//Lets load in the scale so we can do proper predictions
-			$minmax = explode(',', file_get_contents('analysis.ex'));
+			$minmax = explode(',', file_get_contents($this->analysis_file));
 			$this->min = $minmax[0];
 			$this->max = $minmax[1];
+			echo "Loaded data scale from file: min: " . $this->min . ", max: " . $this->max . "\n";
 		}
 		$svm = new SVM();
-		$this->model = $use_save && file_exists('model.sav') ? new SVMModel('model.sav') : $svm->train($this->data);
-		$this->model->save('model.sav');
+		$this->model = $use_save && file_exists($this->model_file) ? new SVMModel($this->model_file) : $svm->train($this->data, array(-1 => $inter_weight, 1 => $pre_weight));
+		$this->model->save($this->model_file);
 	}
 
 	public function predict($data){
@@ -52,9 +69,13 @@ class AESSeizurePrediction {
 		
 		foreach($analysis['averages'] as $average){
 			$row = array(1 => ($average - $this->min) / ($this->max - $this->min));
-			$result += $this->model->predict($row);
+			$channel_result =  $this->model->predict($row);
+			$result += $channel_result;
+			
+			echo "Channel prediction: $channel_result\n";
 		}
 
+		echo "Data prediction: $result\n";
 		return $result > 0 ? 1 : -1;
 	}
 
