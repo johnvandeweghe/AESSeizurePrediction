@@ -46,3 +46,17 @@ Conclusion: Abs will continue
 
 Experiment: More sigma values
  With std deviation (>3 sigma exlcuded):
+  2014-11-16T04:52:50-06:00 RESULT:
+  Inter avg: 0.774, Pre avg: 0.8
+  Inter correct: 24, Inter total: 31, Pre correct: 8, Pre total: 10
+  Overall Score: 0.78
+ 4 sigma = bad
+ 3.5 sigma = shitty
+Conclusion: 3 sigma forwards.
+
+Experiment: Remove data scaling now that we are usign 3 sigma exclusion
+ without data scaling:
+  2014-11-16T14:31:02-06:00 RESULT:
+  Inter avg: 0.806, Pre avg: 0.6
+  Inter correct: 25, Inter total: 31, Pre correct: 6, Pre total: 10
+  Overall Score: 0.756
