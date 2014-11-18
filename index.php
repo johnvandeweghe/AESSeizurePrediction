@@ -7,7 +7,7 @@ include('models/Classifier.interface.php');
 include('models/SVMClassifier.class.php');
 
 $classifiers = [
-	new SVMClassifier(),
+	new ANNClassifier(),
 ];
 
 if(!isset($argv[1]) || !isset($argv[2])){
