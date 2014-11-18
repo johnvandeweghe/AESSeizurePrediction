@@ -15,12 +15,12 @@ class SVMClassifier implements Classifier {
 
 	public function trainBulk($data){
 		//Calculate the scale
-		foreach($this->data as $datum){
-			if($this->max === false || $this->datum[1] > $this->max){
-				$this->max = $this->datum[1];
+		foreach($data as $datum){
+			if($this->max === false || $datum[1] > $this->max){
+				$this->max = $datum[1];
 			}
-			if($this->min === false || $this->datum[1] < $this->min){
-				$this->min = $this->datum[1];
+			if($this->min === false || $datum[1] < $this->min){
+				$this->min = $datum[1];
 			}
 			if($datum[0] > 0){
 				$this->total_neg++;
@@ -30,7 +30,7 @@ class SVMClassifier implements Classifier {
 		}
 		
 		//Scale the data
-		foreach($this->data as &$datum){
+		foreach($data as &$datum){
 			$datum[1] = ($datum[1] - $this->min) / ($this->max - $this->min);
 		}
 		
@@ -39,7 +39,7 @@ class SVMClassifier implements Classifier {
 		$pos_weight = 1 - ($this->total_pos / ($this->total_neg+$this->total_pos));
 		
 		$svm = new SVM();
-		$this->model = $svm->train($this->data, array(-1 => $neg_weight, 1 => $pos_weight));	
+		$this->model = $svm->train($data, array(-1 => $neg_weight, 1 => $pos_weight));	
 	}
 	
 	public function train($input, $output){
@@ -56,7 +56,7 @@ class SVMClassifier implements Classifier {
 			throw new Exception('File not found (ensure .limits file exists)');
 		}
 		
-		$this->model = new SVMModel($this->model_file);
+		$this->model = new SVMModel($filename);
 		
 		$minmax = explode(',', file_get_contents($filename . '.limits'));
 		$this->min = $minmax[0];

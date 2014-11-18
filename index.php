@@ -4,7 +4,7 @@ include('libraries/Matlab.class.php');
 include('libraries/MatlabArray.class.php');
 include('models/AESSeizurePrediction.class.php');
 include('models/Classifier.interface.php');
-include('models/SVM.Classifier.class.php');
+include('models/SVMClassifier.class.php');
 
 $classifiers = [
 	new SVMClassifier(),
@@ -24,8 +24,7 @@ echo date('c') . " Starting up...\n";
 
 
 if(!$use_saved){
-	//for($i = 1; $i < 31; $i++){
-	for($i = 1; $i < 6; $i++){
+	for($i = 1; $i < 31; $i++){
 		$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 		$ml = new Matlab($path . $prefix . 'interictal_segment_0'. $padded .'.mat');
 
@@ -36,8 +35,7 @@ if(!$use_saved){
 
 	echo date('c') . " Done learning inter\n";
 
-	//for($i = 1; $i < 21; $i++){
-	for($i = 1; $i < 6; $i++){
+	for($i = 1; $i < 21; $i++){
 		$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 		$ml = new Matlab($path . $prefix . 'preictal_segment_0'. $padded .'.mat');
 
@@ -58,8 +56,7 @@ $inter_right = 0;
 $inter_total = 0;
 
 //for($i = 338; $i < 451; $i++){
-//for($i = 420; $i < 451; $i++){
-for($i = 441; $i < 451; $i++){
+for($i = 420; $i < 451; $i++){
 	$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 	$ml = new Matlab($path . $prefix . 'interictal_segment_0'. $padded .'.mat');
 

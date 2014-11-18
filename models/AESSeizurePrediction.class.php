@@ -22,10 +22,10 @@ class AESSeizurePrediction {
 	public function process($use_save = false){
 		foreach($this->classifiers as $classifier){
 			if($use_save){
-				$classifier->load($clasifier->name . '.sav');
+				$classifier->load($this->file_prefix . $classifier->name . '.sav');
 			} else {
-				$classifier->learnBulk($this->data);
-				$classifier->save($classifier->name . '.sav');
+				$classifier->trainBulk($this->data);
+				$classifier->save($this->file_prefix . $classifier->name . '.sav');
 			}
 		}
 	}
@@ -33,11 +33,11 @@ class AESSeizurePrediction {
 	public function predict($data){
 		$result = 0;
 	
-		$analysis = self::cleanAverages($data);
+		$averages = self::cleanAverages($data);
 		
-		foreach($analysis['averages'] as $average){
+		foreach($averages as $average){
 			foreach($this->classifiers as $classifier){
-				$result += $clasifier->predict($average);
+				$result += $classifier->predict($average);
 			}
 		}
 
