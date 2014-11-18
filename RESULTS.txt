@@ -60,3 +60,7 @@ Experiment: Remove data scaling now that we are usign 3 sigma exclusion
   Inter avg: 0.806, Pre avg: 0.6
   Inter correct: 25, Inter total: 31, Pre correct: 6, Pre total: 10
   Overall Score: 0.756
+Conclusion: Wrecked pre score, barely improved inter score. Continuing use of data scaling
+
+Experiment: Trying ANNs, first independantly, then combined with SVM.
+ With ANN:

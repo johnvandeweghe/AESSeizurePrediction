@@ -1,30 +1,31 @@
 <?php
 ini_set('memory_limit', -1);
-include('Matlab.class.php');
-include('MatlabArray.class.php');
-include('AESSeizurePrediction.class.php');
+include('libraries/Matlab.class.php');
+include('libraries/MatlabArray.class.php');
+include('models/AESSeizurePrediction.class.php');
+include('models/Classifier.interface.php');
+include('models/SVM.Classifier.class.php');
+
+$classifiers = [
+	new SVMClassifier(),
+];
 
 if(!isset($argv[1]) || !isset($argv[2])){
-	echo "Usage: php index.php mat_path file_prefix [load_only=0] [analysis_file=analysis.ex] [model_file=model.sav]\n";
+	echo "Usage: php index.php mat_path file_prefix [load_only=0] [save_prefix='']\n";
 	exit(1);
 }
 $path = $argv[1];
 $prefix = $argv[2];
 $use_saved = !isset($argv[3]) ?: $argv[3] == 1;
-$analysis_file = !isset($argv[4]) ? 'analysis.ex' : $argv[4];
-$model_file = !isset($argv[5]) ? 'model.sav' : $argv[5];
+$save_prefix = !isset($argv[4]) ? '' : $argv[4];
 
-if($use_saved && (!file_exists($model_file) || !file_exists($analysis_file))){
-	echo "Save/analysis file not found!\n";
-	exit(1);
-}
-
-$p = new AESSeizurePrediction($analysis_file, $model_file);
+$p = new AESSeizurePrediction($classifiers, $save_prefix);
 echo date('c') . " Starting up...\n";
 
 
 if(!$use_saved){
-	for($i = 1; $i < 31; $i++){
+	//for($i = 1; $i < 31; $i++){
+	for($i = 1; $i < 6; $i++){
 		$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 		$ml = new Matlab($path . $prefix . 'interictal_segment_0'. $padded .'.mat');
 
@@ -35,7 +36,8 @@ if(!$use_saved){
 
 	echo date('c') . " Done learning inter\n";
 
-	for($i = 1; $i < 21; $i++){
+	//for($i = 1; $i < 21; $i++){
+	for($i = 1; $i < 6; $i++){
 		$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 		$ml = new Matlab($path . $prefix . 'preictal_segment_0'. $padded .'.mat');
 
@@ -44,25 +46,20 @@ if(!$use_saved){
 	}
 
 	echo date('c') . " Done learning pre\n";
-	if(file_exists($model_file)){
-		unlink($model_file);
-	}
-	if(file_exists($analysis_file)){
-		unlink($analysis_file);
-	}
 }
 
 $p->process($use_saved);
 
 if(!$use_saved){
-	echo date('c') . " Done creating model\n";
+	echo date('c') . " Done creating models\n";
 }
 
 $inter_right = 0;
 $inter_total = 0;
 
 //for($i = 338; $i < 451; $i++){
-for($i = 420; $i < 451; $i++){
+//for($i = 420; $i < 451; $i++){
+for($i = 441; $i < 451; $i++){
 	$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 	$ml = new Matlab($path . $prefix . 'interictal_segment_0'. $padded .'.mat');
 
