@@ -1,10 +1,7 @@
 <?php
-//SVM with data scaling, weight calculation
+//SVM with weight calculation
 class SVMClassifier implements Classifier {
 	private $data = [];
-	
-	private $min = false;
-	private $max = false;
 	
 	private $total_neg = 0;
 	private $total_pos = 0;
@@ -16,22 +13,11 @@ class SVMClassifier implements Classifier {
 	public function trainBulk($data){
 		//Calculate the scale
 		foreach($data as $datum){
-			if($this->max === false || $datum[1] > $this->max){
-				$this->max = $datum[1];
-			}
-			if($this->min === false || $datum[1] < $this->min){
-				$this->min = $datum[1];
-			}
 			if($datum[0] > 0){
 				$this->total_neg++;
 			} else {
 				$this->total_pos++;
 			}
-		}
-		
-		//Scale the data
-		foreach($data as &$datum){
-			$datum[1] = ($datum[1] - $this->min) / ($this->max - $this->min);
 		}
 		
 		//Calculate weight
@@ -47,24 +33,19 @@ class SVMClassifier implements Classifier {
 	}
 	
 	public function predict($input){
-		$row = [1 => ($input - $this->min) / ($this->max - $this->min)];
+		$row = [1 => $input];
 		return $this->model->predict($row);
 	}
 	
 	public function load($filename){
-		if(!file_exists($filename) || !file_exists($filename . '.limits')){
-			throw new Exception('File not found (ensure .limits file exists)');
+		if(!file_exists($filename)){
+			throw new Exception('File not found');
 		}
 		
 		$this->model = new SVMModel($filename);
-		
-		$minmax = explode(',', file_get_contents($filename . '.limits'));
-		$this->min = $minmax[0];
-		$this->max = $minmax[1];
 	}
 	
 	public function save($filename){
 		$this->model->save($filename);
-		file_put_contents($filename . '.limits', $this->min . ',' . $this->max);
 	}
 }

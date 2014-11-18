@@ -62,5 +62,20 @@ Experiment: Remove data scaling now that we are usign 3 sigma exclusion
   Overall Score: 0.756
 Conclusion: Wrecked pre score, barely improved inter score. Continuing use of data scaling
 
+Experiment: Change min/max to the min max of the average, not the original data.
+ New min/max:
+  2014-11-18T01:17:38-06:00 RESULT:
+  Inter avg: 1, Pre avg: 0
+  Inter correct: 31, Inter total: 31, Pre correct: 0, Pre total: 10
+  Overall Score: 0.756
+ >2 sigma data exclusion with new min/max:
+  2014-11-18T02:05:42-06:00 RESULT:
+  Inter avg: 1, Pre avg: 0
+  Inter correct: 31, Inter total: 31, Pre correct: 0, Pre total: 10
+  Overall Score: 0.756
+ Disable abs?
+ 
+
+
 Experiment: Trying ANNs, first independantly, then combined with SVM.
  With ANN:
