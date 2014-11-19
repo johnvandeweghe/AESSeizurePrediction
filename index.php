@@ -70,7 +70,7 @@ $pre_total = 0;
 
 for($i = 21; $i < 31; $i++){
 	$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
-	$data = json_decode(file_get_contents('averaged_data/' . $prefix . 'interictal_segment_0'. $padded .'.avg'), true);
+	$data = json_decode(file_get_contents('averaged_data/' . $prefix . 'preictal_segment_0'. $padded .'.avg'), true);
 
 	$pre_total++;
 	$result = $p->predict($data) == 1;
