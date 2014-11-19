@@ -1,6 +1,6 @@
 AESSeizurePrediction
 ====================
-This is a project orignally for a compettion on Kaggle.com
+This is a project originally for a competition on Kaggle.com
 However, having realized there were no Matlab libraries for PHP, I decided to write one myself. Taking the .mat files from the competition as examples I wrote some code that can properly parse them. I haven't tested it with any other .mat files, but it's possible it could work.
 Having written the library I decided to go forward with the implementation to see how well I could do. That's where it's at now.
 
@@ -13,6 +13,5 @@ Requirements
 
 TODO
 ====================
-* Add ability to add to .sav instead of writing it from scratch
 * Improve scores
 * Test more than Dog_5
