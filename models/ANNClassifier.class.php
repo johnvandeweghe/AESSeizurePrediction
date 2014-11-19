@@ -7,7 +7,7 @@ class ANNClassifier implements Classifier {
 		'num_input' => 1,
 		'num_output' => 1,
 		'num_layers' => 3,
-		'num_neurons_hidden' => 3,
+		'num_neurons_hidden' => 10,
 		'desired_error' => 0.001,
 		'max_epochs' => 500000,
 		'epochs_between_reports' => 1000,
@@ -24,6 +24,7 @@ class ANNClassifier implements Classifier {
 			fann_set_activation_function_hidden($this->ann, FANN_SIGMOID_SYMMETRIC);
     		fann_set_activation_function_output($this->ann, FANN_SIGMOID_SYMMETRIC);
 		}
+
 		$contents = count($data) . " 1 1\n";
 		foreach($data as $datum){
 			$contents .= $datum[1] . "\n" . $datum[0] . "\n";
@@ -31,6 +32,7 @@ class ANNClassifier implements Classifier {
 		file_put_contents('temp.tmp', $contents);
 		fann_train_on_file($this->ann, 'temp.tmp', $this->settings['max_epochs'], $this->settings['epochs_between_reports'], $this->settings['desired_error']);
 		unlink('temp.tmp');
+		echo "MSE: " . fann_get_MSE($this->ann) . "\n";
 	}
 	public function train($input, $output){
 		//NOPE

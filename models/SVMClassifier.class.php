@@ -13,7 +13,7 @@ class SVMClassifier implements Classifier {
 	public function trainBulk($data){
 		//Calculate the scale
 		foreach($data as $datum){
-			if($datum[0] > 0){
+			if($datum[0] < 0){
 				$this->total_neg++;
 			} else {
 				$this->total_pos++;

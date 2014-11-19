@@ -74,8 +74,17 @@ Experiment: Change min/max to the min max of the average, not the original data.
   Inter correct: 31, Inter total: 31, Pre correct: 0, Pre total: 10
   Overall Score: 0.756
  Disable abs?
- 
-
+  terrible
+Conclusion: removed scaling
 
 Experiment: Trying ANNs, first independantly, then combined with SVM.
  With ANN:
+  2014-11-18T15:18:11-06:00 RESULT:
+  Inter avg: 0.839, Pre avg: 0.5
+  Inter correct: 26, Inter total: 31, Pre correct: 5, Pre total: 10
+  Overall Score: 0.756
+ More samples:
+  eh
+Experiment: Both ANN and SVM:
+ Result:
+  

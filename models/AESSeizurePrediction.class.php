@@ -11,9 +11,7 @@ class AESSeizurePrediction {
 		$this->file_prefix = $file_prefix;
 	}
 
-	public function add($data, $is_seizure){
-		$channel_averages = self::cleanAverages($data);
-
+	public function add($channel_averages, $is_seizure){
 		foreach($channel_averages as $average){
 			$this->data[] = [($is_seizure ? 1 : -1), 1 => $average];
 		}
@@ -30,10 +28,8 @@ class AESSeizurePrediction {
 		}
 	}
 
-	public function predict($data){
+	public function predict($averages){
 		$result = 0;
-	
-		$averages = self::cleanAverages($data);
 		
 		foreach($averages as $average){
 			foreach($this->classifiers as $classifier){
