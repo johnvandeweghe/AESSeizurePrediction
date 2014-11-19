@@ -5,13 +5,14 @@ include('libraries/MatlabArray.class.php');
 include('models/AESSeizurePrediction.class.php');
 
 if(!isset($argv[1]) || !isset($argv[2])){
-	echo "Usage: php index.php mat_path file_prefix total_inter total_pre\n";
+	echo "Usage: php index.php mat_path file_prefix total_inter total_pre [save_prefix=file_prefix]\n";
 	exit(1);
 }
 $path = $argv[1];
 $prefix = $argv[2];
 $total_inter = $argv[3];
 $total_pre = $argv[4];
+$save_prefix =  isset($argv[5]) ? $argv[5] : $prefix;
 
 for($i = 1; $i <= $total_inter; $i++){
 	$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
@@ -19,7 +20,7 @@ for($i = 1; $i <= $total_inter; $i++){
 
 	$average = average($ml);
 
-	file_put_contents('averaged_data/' . $prefix . 'interictal_segment_0'. $padded .'.avg', json_encode($average));
+	file_put_contents('averaged_data/' . $save_prefix . 'interictal_segment_0'. $padded .'.avg', json_encode($average));
 
 	echo date('c') . ' Finished ' . $prefix . 'interictal_segment_0'. $padded .".mat\n";
 }
@@ -30,7 +31,7 @@ for($i = 1; $i <= $total_pre; $i++){
 
 	$average = average($ml);
 
-	file_put_contents('averaged_data/' . $prefix . 'preictal_segment_0'. $padded .'.avg', json_encode($average));
+	file_put_contents('averaged_data/' . $save_prefix . 'preictal_segment_0'. $padded .'.avg', json_encode($average));
 
 	echo date('c') . ' Finished ' . $prefix . 'preictal_segment_0'. $padded .".mat\n";
 }

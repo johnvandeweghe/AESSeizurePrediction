@@ -23,7 +23,7 @@ echo date('c') . " Starting up...\n";
 
 
 if(!$use_saved){
-	for($i = 1; $i < 336; $i++){
+	for($i = 1; $i < 387; $i++){
 		$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 		$data = json_decode(file_get_contents('averaged_data/' . $prefix . 'interictal_segment_0'. $padded .'.avg'), true);
 
@@ -34,7 +34,7 @@ if(!$use_saved){
 
 	for($i = 1; $i < 21; $i++){
 		$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
-		$data = json_decode(file_get_contents('averaged_data/' . $prefix . 'interictal_segment_0'. $padded .'.avg'), true);
+		$data = json_decode(file_get_contents('averaged_data/' . $prefix . 'preictal_segment_0'. $padded .'.avg'), true);
 
 		$p->add($data, true);
 	}
@@ -53,7 +53,7 @@ $inter_right = 0;
 $inter_total = 0;
 
 //for($i = 338; $i < 451; $i++){
-for($i = 336; $i < 451; $i++){
+for($i = 387; $i < 451; $i++){
 	$padded = str_pad($i . '', 3, '0', STR_PAD_LEFT);
 	$data = json_decode(file_get_contents('averaged_data/' . $prefix . 'interictal_segment_0'. $padded .'.avg'), true);
 
