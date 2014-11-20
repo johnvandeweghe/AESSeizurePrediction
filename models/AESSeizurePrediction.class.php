@@ -5,9 +5,11 @@ class AESSeizurePrediction {
 	private $data = [];
 	
 	private $classifiers = [];
+	private $weights = [];
 
-	public function __construct($classifiers, $file_prefix=''){
+	public function __construct($classifiers, $weights, $file_prefix=''){
 		$this->classifiers = $classifiers;
+		$this->weights = $weights;
 		$this->file_prefix = $file_prefix;
 	}
 
@@ -32,8 +34,8 @@ class AESSeizurePrediction {
 		$result = 0;
 		
 		foreach($averages as $average){
-			foreach($this->classifiers as $classifier){
-				$result += $classifier->predict($average);
+			foreach($this->classifiers as $i => $classifier){
+				$result += $this->weights[$i] * $classifier->predict($average);
 			}
 		}
 
