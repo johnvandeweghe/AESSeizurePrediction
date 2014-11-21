@@ -6,8 +6,8 @@ include('models/SVMClassifier.class.php');
 include('models/ANNClassifier.class.php');
 
 $classifiers = [
-	//new SVMClassifier(),
-	new ANNClassifier(),
+	new SVMClassifier(),
+	//new ANNClassifier(),
 ];
 
 $classifier_weights = [

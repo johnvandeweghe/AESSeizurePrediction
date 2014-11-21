@@ -14,9 +14,9 @@ class AESSeizurePrediction {
 	}
 
 	public function add($channel_averages, $is_seizure){
-		foreach($channel_averages as $average){
-			$this->data[] = [($is_seizure ? 1 : -1), 1 => $average];
-		}
+		//foreach($channel_averages as $average){
+			$this->data[] = array_merge([($is_seizure ? 1 : -1)], $channel_averages);
+		//}
 	}
 
 	public function process($use_save = false){
@@ -33,10 +33,8 @@ class AESSeizurePrediction {
 	public function predict($averages){
 		$result = 0;
 		
-		foreach($averages as $average){
-			foreach($this->classifiers as $i => $classifier){
-				$result += $this->weights[$i] * $classifier->predict($average);
-			}
+		foreach($this->classifiers as $i => $classifier){
+			$result += $this->weights[$i] * $classifier->predict($averages);
 		}
 
 		echo "Data prediction: $result\n";

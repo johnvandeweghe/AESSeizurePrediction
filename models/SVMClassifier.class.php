@@ -33,8 +33,8 @@ class SVMClassifier implements Classifier {
 	}
 	
 	public function predict($input){
-		$row = [1 => $input];
-		return $this->model->predict($row);
+		$input = array_slice($input, 1, null, true);
+		return $this->model->predict($input);
 	}
 	
 	public function load($filename){
