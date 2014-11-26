@@ -161,17 +161,21 @@ class MatlabArray extends Matlab {
 	}
 
 	public function getFieldData($fieldName){
-		$sub_array_data = $this->sub_arrays[$fieldName]->data;
-		if($sub_array_data){
-			if(is_array($sub_array_data) && reset($sub_array_data) instanceof MatlabArray){
-				return array_map(function($e){return $e->nextSubElement();}, $sub_array_data);
-			} elseif($sub_array_data instanceof MatlabArray) {
-				return $sub_array_data->nextSubElement();
+		if(isset($this->sub_arrays[$fieldName])){
+			$sub_array_data = $this->sub_arrays[$fieldName]->data;
+			if($sub_array_data){
+				if(is_array($sub_array_data) && reset($sub_array_data) instanceof MatlabArray){
+					return array_map(function($e){return $e->nextSubElement();}, $sub_array_data);
+				} elseif($sub_array_data instanceof MatlabArray) {
+					return $sub_array_data->nextSubElement();
+				} else {
+					return $sub_array_data;
+				}
 			} else {
-				return $sub_array_data;
+				return $this->sub_arrays[$fieldName]->nextSubElement();
 			}
 		} else {
-			return $this->sub_arrays[$fieldName]->nextSubElement();
+			return null;
 		}
 	}
 }
